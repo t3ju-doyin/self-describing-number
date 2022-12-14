@@ -3,39 +3,43 @@
 #include <string.h>
 
 int main(){
-  FILE * selfFile;
-  selfFile = fopen("self.txt", "r");
-  int counter = 0;
-  char testCase[100];
-  int testCase_array[100];
-  int testCase_length; 
-
-  while (fgets(testCase, 100, selfFile)){
-    testCase[strcspn(testCase,"\n")]='\0'; 
-    // printf("%s",testCase);
-    if (counter>=1){
+    FILE* integer_file;
+    integer_file = fopen("self-describing.in", "r");
+    int counter = 0;
+    int testCase_array[100];
+    
+    int testCase_length;
+    char self_describing = 'T';
+    int testCases;
+    fscanf(integer_file,"%d", &testCases); //the first line of the file is extracted
+    
+    for (int i = 0; i<testCases;i++){
+      char testCase[100];
+      fscanf(integer_file,"%s",&testCase);
       testCase_length = strlen(testCase);
-      for (int i = 0; i < testCase_length; i++) {
+      for(int i = 0;i < testCase_length; i++){
         testCase_array[i] = testCase[i] - '0';
       }
-     for (int m = 0; m< testCase_length; m++) {
-        for (int i = 0; i< testCase_length; i++) {
-          if (testCase_array[i] == m) {
-            counter++;
+      for (int count = 0;count<testCase_length;count++){
+        for (int i = 0; i<testCase_length; i++){
+          if (testCase_array[i] == count){
+            count++;
           }
         }
-        if(counter == testCase_array[m]){
-          printf("Self-describing\n");
+        if(count == testCase_array[counter]){
+          self_describing = 'T';
         }
         else{
-          printf("\n");
-          printf("Not self-describing\n");
           break;
         }
-     }
+        counter = 0;
+        if (self_describing != 'F'){
+          printf("Self-describing\n");
+          break;
+        }
+      }
     }
-  }
-  fclose(selfFile);
-  return 0;
+    fclose(integer_file);
+    return 0;
 }
 
